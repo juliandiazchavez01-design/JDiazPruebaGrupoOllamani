@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,6 +21,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Empleado", "GetAll", "Empleado", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -34,6 +36,23 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     @RenderSection("scripts", required: false)
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/EmpleadoDelete.js"></script>
+    @if (TempData["SwalTitle"] != null)
+    {
+        <script>
+        Swal.fire({
+            title: '@TempData["SwalTitle"]',
+            text: '@TempData["SwalText"]',
+            icon: '@TempData["SwalIcon"]',
+            timer: 2000,
+            showConfirmButton: false
+        });
+        </script>
+    }
+
 </body>
 </html>

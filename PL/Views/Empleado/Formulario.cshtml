@@ -1,0 +1,69 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "Formulario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.IdEmpleado == 0)
+    {
+        <h1 class="text-center">Nuevo Empleado</h1>
+    }
+    else
+    {
+        <h1 class="text-center">Actualizar Empleado</h1>
+    }
+
+<div class="container mt-4">
+    @using (Html.BeginForm("Formulario", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(data => data.IdEmpleado)
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-label">Nombre Empleado</label>
+            @Html.TextBoxFor(data => data.Nombre, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Apellido Paterno</label>
+            @Html.TextBoxFor(data => data.ApellidoPaterno, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Apellido Materno</label>
+            @Html.TextBoxFor(data => data.ApellidoMaterno, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-label">Salario</label>
+            @Html.TextBoxFor(data => data.Salario, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <div class="form-check mt-4">
+                @Html.CheckBoxFor(data => data.Activo, new { @class = "form-check-input" })
+                <label class="form-check-label ms-1">Activo</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Departamento</label>
+            @if (Model?.Departamento?.Departamentos?.Count > 0)
+            {
+                @Html.DropDownListFor(data => data.Departamento.IdDepartamento,
+                new SelectList(Model.Departamento.Departamentos, "IdDepartamento", "Nombre", Model.Departamento.IdDepartamento),
+                    "Selecciona un Departamento", new { @class = "form-select cursor-inpt" })
+            }
+            else
+            {
+                <p style="color: red;">No hay Departamentos</p>
+           }
+        </div>
+    </div>
+
+        <div class="col-md-8 d-flex justify-content-end">
+            <a href="@Url.Action("GetAll", "Empleado")" class="btn btn-danger me-2">
+                Regresar
+            </a>
+            <button type="submit" class="btn btn-success">
+                Guardar
+            </button>
+        </div>
+    }
+</div>

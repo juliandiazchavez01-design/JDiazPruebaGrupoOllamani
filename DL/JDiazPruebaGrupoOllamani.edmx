@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="JDiazPruebaGrupoOllamaniModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="IdDepartamento" />
+          </Key>
+          <Property Name="IdDepartamento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salario" Type="decimal" Precision="10" Scale="4" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+          <Property Name="FechaRegistro" Type="date" />
+          <Property Name="IdDepartamento" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Empleado__IdDepa__1273C1CD">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="IdDepartamento" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdDepartamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DepartamentoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="EmpleadoCRUD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Accion" Type="varchar" Mode="In" />
+          <Parameter Name="IdEmpleado" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+          <Parameter Name="Salario" Type="decimal" Mode="In" />
+          <Parameter Name="Activo" Type="bit" Mode="In" />
+          <Parameter Name="IdDepartamento" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="JDiazPruebaGrupoOllamaniModelStoreContainer">
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Empleado__IdDepa__1273C1CD" Association="Self.FK__Empleado__IdDepa__1273C1CD">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JDiazPruebaGrupoOllamaniModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="IdDepartamento" />
+          </Key>
+          <Property Name="IdDepartamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Empleadoes" Relationship="Self.FK__Empleado__IdDepa__1273C1CD" FromRole="Departamento" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="10" Scale="4" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="0" />
+          <Property Name="IdDepartamento" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Departamento" Relationship="Self.FK__Empleado__IdDepa__1273C1CD" FromRole="Empleado" ToRole="Departamento" />
+        </EntityType>
+        <Association Name="FK__Empleado__IdDepa__1273C1CD">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="IdDepartamento" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdDepartamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JDiazPruebaGrupoOllamaniEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departamentoes" EntityType="Self.Departamento" />
+          <EntitySet Name="Empleadoes" EntityType="Self.Empleado" />
+          <AssociationSet Name="FK__Empleado__IdDepa__1273C1CD" Association="Self.FK__Empleado__IdDepa__1273C1CD">
+            <End Role="Departamento" EntitySet="Departamentoes" />
+            <End Role="Empleado" EntitySet="Empleadoes" />
+          </AssociationSet>
+          <FunctionImport Name="EmpleadoCRUD" ReturnType="Collection(JDiazPruebaGrupoOllamaniModel.EmpleadoCRUD_Result)">
+            <Parameter Name="Accion" Mode="In" Type="String" />
+            <Parameter Name="IdEmpleado" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+            <Parameter Name="Salario" Mode="In" Type="Decimal" />
+            <Parameter Name="Activo" Mode="In" Type="Boolean" />
+            <Parameter Name="IdDepartamento" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DepartamentoGetAll" ReturnType="Collection(JDiazPruebaGrupoOllamaniModel.DepartamentoGetAll_Result)" />
+        </EntityContainer>
+        <ComplexType Name="EmpleadoCRUD_Result">
+          <Property Type="Int32" Name="IdEmpleado" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="4" />
+          <Property Type="Boolean" Name="Activo" Nullable="true" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="true" />
+          <Property Type="Int32" Name="IdDepartamento" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="DepartamentoGetAll_Result">
+          <Property Type="Int32" Name="IdDepartamento" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JDiazPruebaGrupoOllamaniModelStoreContainer" CdmEntityContainer="JDiazPruebaGrupoOllamaniEntities">
+          <EntitySetMapping Name="Departamentoes">
+            <EntityTypeMapping TypeName="JDiazPruebaGrupoOllamaniModel.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleadoes">
+            <EntityTypeMapping TypeName="JDiazPruebaGrupoOllamaniModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DepartamentoGetAll" FunctionName="JDiazPruebaGrupoOllamaniModel.Store.DepartamentoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JDiazPruebaGrupoOllamaniModel.DepartamentoGetAll_Result">
+                <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
