@@ -30,6 +30,11 @@ namespace DL
         public virtual DbSet<Departamento> Departamentoes { get; set; }
         public virtual DbSet<Empleado> Empleadoes { get; set; }
     
+        public virtual ObjectResult<DepartamentoGetAll_Result> DepartamentoGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DepartamentoGetAll_Result>("DepartamentoGetAll");
+        }
+    
         public virtual ObjectResult<EmpleadoCRUD_Result> EmpleadoCRUD(string accion, Nullable<int> idEmpleado, string nombre, string apellidoPaterno, string apellidoMaterno, Nullable<decimal> salario, Nullable<bool> activo, Nullable<int> idDepartamento)
         {
             var accionParameter = accion != null ?
@@ -65,11 +70,6 @@ namespace DL
                 new ObjectParameter("IdDepartamento", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EmpleadoCRUD_Result>("EmpleadoCRUD", accionParameter, idEmpleadoParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter, salarioParameter, activoParameter, idDepartamentoParameter);
-        }
-    
-        public virtual ObjectResult<DepartamentoGetAll_Result> DepartamentoGetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DepartamentoGetAll_Result>("DepartamentoGetAll");
         }
     }
 }

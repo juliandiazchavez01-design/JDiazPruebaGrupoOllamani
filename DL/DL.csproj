@@ -53,17 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conexion.cs" />
     <Compile Include="Departamento.cs">
       <DependentUpon>JDiazPruebaGrupoOllamani.tt</DependentUpon>
     </Compile>
     <Compile Include="DepartamentoGetAll_Result.cs">
       <DependentUpon>JDiazPruebaGrupoOllamani.tt</DependentUpon>
     </Compile>
-    <Compile Include="DTOs.cs" />
     <Compile Include="Empleado.cs">
-      <DependentUpon>JDiazPruebaGrupoOllamani.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EmpleadoCRUD1_Result.cs">
       <DependentUpon>JDiazPruebaGrupoOllamani.tt</DependentUpon>
     </Compile>
     <Compile Include="EmpleadoCRUD_Result.cs">

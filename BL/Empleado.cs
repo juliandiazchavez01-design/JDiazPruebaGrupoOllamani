@@ -1,7 +1,10 @@
 ﻿using DL;
+using ML;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -17,9 +20,8 @@ namespace BL
             try
             {
                 using (DL.JDiazPruebaGrupoOllamaniEntities context = new DL.JDiazPruebaGrupoOllamaniEntities())
-                {
-                    var listEmpleados = context.Database.SqlQuery<GetAllDTO>(
-                        "EXEC EmpleadoCRUD @Accion = {0}", "GetAll").ToList();
+                {         
+                    var listEmpleados = context.EmpleadoCRUD("GetAll", null,null,null,null,null,null,null);
 
                     if (listEmpleados != null)
                     {
@@ -32,8 +34,8 @@ namespace BL
                             empleadoObject.ApellidoPaterno = itemEmployee.ApellidoPaterno;
                             empleadoObject.ApellidoMaterno = itemEmployee.ApellidoMaterno;
                             empleadoObject.Salario = itemEmployee.Salario;
-                            empleadoObject.Activo = itemEmployee.Activo;
-                            empleadoObject.FechaRegistro = itemEmployee.FechaRegistro;
+                            empleadoObject.Activo = itemEmployee.Activo.Value;
+                            empleadoObject.FechaRegistro = itemEmployee.FechaRegistro.Value;
                             empleadoObject.Departamento = new ML.Departamento();
                             empleadoObject.Departamento.IdDepartamento = itemEmployee.IdDepartamento;
                             empleadoObject.Departamento.Nombre = itemEmployee.NombreDepartamento;
@@ -66,10 +68,7 @@ namespace BL
             {
                 using (DL.JDiazPruebaGrupoOllamaniEntities context = new DL.JDiazPruebaGrupoOllamaniEntities())
                 {
-                    var empleadoDB = context.Database.SqlQuery<GetAllDTO>(
-                       "EXEC EmpleadoCRUD @Accion = {0}, @IdEmpleado = {1}",
-                       "GetById", IdEmpleado
-                   ).FirstOrDefault();
+                    var empleadoDB = context.EmpleadoCRUD("GetById", IdEmpleado, null, null, null, null, null, null).SingleOrDefault();
 
                     if (empleadoDB != null)
                     {
@@ -80,8 +79,8 @@ namespace BL
                             ApellidoPaterno = empleadoDB.ApellidoPaterno,
                             ApellidoMaterno = empleadoDB.ApellidoMaterno,
                             Salario = empleadoDB.Salario,
-                            Activo = empleadoDB.Activo,
-                            FechaRegistro = empleadoDB.FechaRegistro,
+                            Activo = empleadoDB.Activo.Value,
+                            FechaRegistro = empleadoDB.FechaRegistro.Value,
                             Departamento = new ML.Departamento
                             {
                                 IdDepartamento = empleadoDB.IdDepartamento,
@@ -116,9 +115,11 @@ namespace BL
                        new DL.JDiazPruebaGrupoOllamaniEntities())
                 {
                     int filasAfectadas = context.Database.ExecuteSqlCommand(
-                        "EXEC EmpleadoCRUD @Accion = {0}, @Nombre = {1}, @ApellidoPaterno = {2}, " +
-                        "@ApellidoMaterno = {3}, @Salario = {4}, @Activo = {5}, @IdDepartamento = {6}",
+                        "EXEC EmpleadoCRUD @Accion = {0}, @IdEmpleado = {1}, @Nombre = {2}, " +
+                        "@ApellidoPaterno = {3}, @ApellidoMaterno = {4}, @Salario = {5}, " +
+                        "@Activo = {6}, @IdDepartamento = {7}",
                         "Add",
+                        empleado.IdEmpleado,
                         empleado.Nombre,
                         empleado.ApellidoPaterno,
                         empleado.ApellidoMaterno,
@@ -129,7 +130,6 @@ namespace BL
 
                     if (filasAfectadas > 0)
                     {
-                        result.Object = empleado;
                         result.Correct = true;
                     }
                     else
@@ -158,30 +158,27 @@ namespace BL
                        new DL.JDiazPruebaGrupoOllamaniEntities())
                 {
                     int filasAfectadas = context.Database.ExecuteSqlCommand(
-                        "EXEC EmpleadoCRUD @Accion = {0}, @IdEmpleado = {1}, @Nombre = {2}, " +
-                        "@ApellidoPaterno = {3}, @ApellidoMaterno = {4}, @Salario = {5}, " +
-                        "@Activo = {6}, @IdDepartamento = {7}",
-                        "Update",
-                        empleado.IdEmpleado,
-                        empleado.Nombre,
-                        empleado.ApellidoPaterno,
-                        empleado.ApellidoMaterno,
-                        empleado.Salario,
-                        empleado.Activo,
-                        empleado.Departamento.IdDepartamento
-                    );
+                       "EXEC EmpleadoCRUD @Accion = {0}, @IdEmpleado = {1}, @Nombre = {2}, " +
+                       "@ApellidoPaterno = {3}, @ApellidoMaterno = {4}, @Salario = {5}, " +
+                       "@Activo = {6}, @IdDepartamento = {7}",
+                       "Update",
+                       empleado.IdEmpleado,
+                       empleado.Nombre,
+                       empleado.ApellidoPaterno,
+                       empleado.ApellidoMaterno,
+                       empleado.Salario,
+                       empleado.Activo,
+                       empleado.Departamento.IdDepartamento
+                     );
 
                     if (filasAfectadas > 0)
-                    {
-                        result.Object = empleado;
+                    { 
                         result.Correct = true;
-                    }
-                    else
-                    {
+                    }else {
                         result.Correct = false;
-                        result.ErrorMessage = "No se actualizó el empleado";
+                            result.ErrorMessage = "No se actualizó el empleado";
                     }
-                }
+            }
             }
             catch (Exception ex)
             {
@@ -224,6 +221,6 @@ namespace BL
                 result.Ex = ex;
             }
             return result;
-        }
-    }    
+        }       
+    }
 }
