@@ -14,7 +14,8 @@ namespace PL.Controllers
         {
             ML.Empleado empleado = new ML.Empleado();
             empleado.Empleados = new List<object>();
-            ML.Result result = BL.Empleado.GetAllEF();
+            //ML.Result result = BL.Empleado.GetAllEF();
+            ML.Result result = BL.Empleado.GetAllDQ();
             if (result.Correct && result.Objects != null)
             {
                 empleado.Empleados = result.Objects;
@@ -35,7 +36,8 @@ namespace PL.Controllers
             }
             if (IdEmpleado > 0)
             {
-                ML.Result resultGetByIdEmpleado = BL.Empleado.GetByIdEF(IdEmpleado);
+                //ML.Result resultGetByIdEmpleado = BL.Empleado.GetByIdEF(IdEmpleado);
+                ML.Result resultGetByIdEmpleado = BL.Empleado.GetByIdDQ(IdEmpleado);
                 if (resultGetByIdEmpleado.Correct)
                 {
                     empleado = (ML.Empleado)resultGetByIdEmpleado.Object;
@@ -54,7 +56,8 @@ namespace PL.Controllers
         {
             if (empleado.IdEmpleado == 0)
             {
-                ML.Result result = BL.Empleado.AddEF(empleado);
+                //ML.Result result = BL.Empleado.AddEF(empleado);
+                ML.Result result = BL.Empleado.AddDQ(empleado);
                 if (result.Correct)
                 {
                     TempData["SwalTitle"] = "Éxito";
@@ -70,7 +73,8 @@ namespace PL.Controllers
             }
             else
             {
-                ML.Result resultUpdate = BL.Empleado.UpdateEF(empleado);
+                //ML.Result resultUpdate = BL.Empleado.UpdateEF(empleado);
+                ML.Result resultUpdate = BL.Empleado.UpdateDQ(empleado);
                 if (resultUpdate.Correct)
                 {
                     TempData["SwalTitle"] = "Éxito";
@@ -90,7 +94,8 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult Delete(int IdEmpleado)
         {
-            ML.Result result = BL.Empleado.DeleteEF(IdEmpleado);
+            //ML.Result result = BL.Empleado.DeleteEF(IdEmpleado);
+            ML.Result result = BL.Empleado.DeleteDQ(IdEmpleado);
             if (result.Correct)
             {
                 TempData["SwalTitle"] = "Eliminado";

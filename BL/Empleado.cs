@@ -221,6 +221,236 @@ namespace BL
                 result.Ex = ex;
             }
             return result;
-        }       
+        }
+
+        public static ML.Result GetAllDQ()
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(DL.Conexion.Get()))
+                {
+                    SqlCommand cmd = new SqlCommand("EmpleadoCRUD", conexion);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Accion", "GetAll");
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if (table.Rows.Count > 0)
+                    {
+                        result.Objects = new List<object>();
+
+                        foreach (DataRow row in table.Rows)
+                        {
+                            ML.Empleado empleado = new ML.Empleado();
+                            empleado.Departamento = new ML.Departamento();
+
+                            empleado.IdEmpleado = Convert.ToInt32(row["IdEmpleado"]);
+                            empleado.Nombre = row["NombreEmpleado"].ToString();
+                            empleado.ApellidoPaterno = row["ApellidoPaterno"].ToString();
+                            empleado.ApellidoMaterno = row["ApellidoMaterno"].ToString();
+                            empleado.Salario = Convert.ToDecimal(row["Salario"]);
+                            empleado.Activo = Convert.ToBoolean(row["Activo"]);
+                            empleado.FechaRegistro = Convert.ToDateTime(row["FechaRegistro"]);
+                            empleado.Departamento.IdDepartamento = Convert.ToInt32(row["IdDepartamento"]);
+                            empleado.Departamento.Nombre = row["NombreDepartamento"].ToString();
+
+                            result.Objects.Add(empleado);
+                        }
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No hay empleados registrados";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
+
+        public static ML.Result GetByIdDQ(int IdEmpleado)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(DL.Conexion.Get()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("EmpleadoCRUD", conexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Accion", "GetById");
+                        cmd.Parameters.AddWithValue("@IdEmpleado", IdEmpleado);
+
+                        conexion.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            ML.Empleado empleado = new ML.Empleado();
+                            empleado.Departamento = new ML.Departamento();
+
+                            empleado.IdEmpleado = Convert.ToInt32(reader["IdEmpleado"]);
+                            empleado.Nombre = reader["NombreEmpleado"].ToString();
+                            empleado.ApellidoPaterno = reader["ApellidoPaterno"].ToString();
+                            empleado.ApellidoMaterno = reader["ApellidoMaterno"].ToString();
+                            empleado.Salario = Convert.ToDecimal(reader["Salario"]);
+                            empleado.Activo = Convert.ToBoolean(reader["Activo"]);
+                            empleado.FechaRegistro = Convert.ToDateTime(reader["FechaRegistro"]);
+
+                            empleado.Departamento.IdDepartamento =
+                                Convert.ToInt32(reader["IdDepartamento"]);
+                            result.Object = empleado;
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.ErrorMessage = "Empleado no encontrado";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
+
+        public static ML.Result AddDQ(ML.Empleado empleado)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(DL.Conexion.Get()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("EmpleadoCRUD", conexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@Accion", "Add");
+                        cmd.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                        cmd.Parameters.AddWithValue("@ApellidoPaterno", empleado.ApellidoPaterno);
+                        cmd.Parameters.AddWithValue("@ApellidoMaterno", empleado.ApellidoMaterno);
+                        cmd.Parameters.AddWithValue("@Salario", empleado.Salario);
+                        cmd.Parameters.AddWithValue("@Activo", empleado.Activo);
+                        cmd.Parameters.AddWithValue("@IdDepartamento", empleado.Departamento.IdDepartamento);
+
+                        conexion.Open();
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                        {
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.ErrorMessage = "No se pudo insertar el empleado.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
+
+        public static ML.Result UpdateDQ(ML.Empleado empleado)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(DL.Conexion.Get()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("EmpleadoCRUD", conexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@Accion", "Update");
+                        cmd.Parameters.AddWithValue("@IdEmpleado", empleado.IdEmpleado);
+                        cmd.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                        cmd.Parameters.AddWithValue("@ApellidoPaterno", empleado.ApellidoPaterno);
+                        cmd.Parameters.AddWithValue("@ApellidoMaterno", empleado.ApellidoMaterno);
+                        cmd.Parameters.AddWithValue("@Salario", empleado.Salario);
+                        cmd.Parameters.AddWithValue("@Activo", empleado.Activo);
+                        cmd.Parameters.AddWithValue("@IdDepartamento", empleado.Departamento.IdDepartamento);
+
+                        conexion.Open();
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                        {
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.ErrorMessage = "No se pudo insertar el empleado.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
+
+        public static ML.Result DeleteDQ(int IdEmpleado)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(DL.Conexion.Get()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("EmpleadoCRUD", conexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Accion", "Delete");
+                        cmd.Parameters.AddWithValue("@IdEmpleado", IdEmpleado);
+
+                        conexion.Open();
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                        {
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.ErrorMessage = "No se eliminó el empleado.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
     }
 }
