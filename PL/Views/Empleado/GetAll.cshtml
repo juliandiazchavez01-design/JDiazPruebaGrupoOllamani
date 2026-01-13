@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/FomularioEmpleado.css" rel="stylesheet" />
+<link href="~/Content/DevExpressStyles.css" rel="stylesheet" />
 
 <h1 class="text-center">Empleado</h1>
 <div class="d-flex justify-content-between align-items-center">
@@ -11,12 +12,18 @@
     @*<a class="btn btn-success d-flex align-items-center justify-content-center mb-2" style="width:40px; height:40px;" href="@Url.Action("Formulario", "Empleado", new { IdEmpleado = 0 })">
             <i class="bi bi-person-plus fs-5"></i>
         </a>*@
-    <button id="btnAgregar" class="btn btn-success mb-2 d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-        <i class="bi bi-person-plus fs-5"></i>
-    </button>
+    @*<button id="btnAgregar" class="btn btn-success mb-2 d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+            <i class="bi bi-person-plus fs-5"></i>
+        </button>*@
+
+
 </div>
-<div class="table-responsive">
+<div id="gridEmpleados">
+
+</div>
+<!--<div class="table-responsive">
     <table id="tblEmpleado" class="table text-center align-middle">
+
         <thead class="table-dark align-middle">
             <tr>
                 <th scope="col">Nombre Empleado</th>
@@ -28,45 +35,49 @@
                 <th scope="col">Eliminar</th>
             </tr>
         </thead>
-        <tbody>
-            @*@if (Model.Empleados != null)
-            {
-                foreach (ML.Empleado empleado in Model.Empleados)
-                {
-                    <tr>
-                        <th scope="row">@($"{empleado.Nombre} {empleado.ApellidoPaterno} {empleado.ApellidoMaterno}")</th>
-                        <td>$@($"{empleado.Salario:F2}")</td>
-                        <td>@(Convert.ToInt32(empleado.Activo) == 0 ? "Inactivo" : "Activo" )</td>
-                        <td>@empleado.FechaRegistro.ToString("dd/MM/yyyy")</td>
-                        <td>@(empleado.Departamento != null ? empleado.Departamento.Nombre : "Sin departamento")</td>
-                        <td> <a class="btn btn-warning" href="@Url.Action("Formulario", "Empleado", new { IdEmpleado = empleado.IdEmpleado })">Editar</a></td>
-                        <td><a href="#" class="btn btn-danger btn-sm" onclick="confirmDeleteLink('@Url.Action("Delete", "Empleado", new { IdEmpleado = empleado.IdEmpleado })')">
-                            Eliminar</a></td>
-                    </tr>
-                }
-                }
-                else
-                {
+        <tbody>-->
+@*@if (Model.Empleados != null)
+    {
+        foreach (ML.Empleado empleado in Model.Empleados)
+        {
             <tr>
-                <td>Sin regitros por mostrar</td>
+                <th scope="row">@($"{empleado.Nombre} {empleado.ApellidoPaterno} {empleado.ApellidoMaterno}")</th>
+                <td>$@($"{empleado.Salario:F2}")</td>
+                <td>@(Convert.ToInt32(empleado.Activo) == 0 ? "Inactivo" : "Activo" )</td>
+                <td>@empleado.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                <td>@(empleado.Departamento != null ? empleado.Departamento.Nombre : "Sin departamento")</td>
+                <td> <a class="btn btn-warning" href="@Url.Action("Formulario", "Empleado", new { IdEmpleado = empleado.IdEmpleado })">Editar</a></td>
+                <td><a href="#" class="btn btn-danger btn-sm" onclick="confirmDeleteLink('@Url.Action("Delete", "Empleado", new { IdEmpleado = empleado.IdEmpleado })')">
+                    Eliminar</a></td>
             </tr>
-                }*@
-        </tbody>
+        }
+        }
+        else
+        {
+    <tr>
+        <td>Sin regitros por mostrar</td>
+    </tr>
+        }*@
+<!--</tbody> 
     </table>
-</div>
-<script src="~/Scripts/jquery-3.7.0.js"></script>
-<script src="~/Scripts/jquery-3.7.0.min.js"></script>
-<script src="~/Scripts/PeticionesAjax/EmpleadoGetAll.js"></script>
-<script src="~/Scripts/PeticionesAjax/EmpleadoDelete.js"></script>
-<script src="~/Scripts/PeticionesAjax/EmpleadoFormulario.js"></script>
-<script>
-    $(document).ready(function () {
-        cargarEmpleados();
-    });
-    var urlEmpleadoGetAll = '@Url.Action("GetAllAjax", "Empleado")';
-    var urlEmpleadoDelete = '@Url.Action("DeleteAjax", "Empleado")';
-    var urlEmpleadoGetById = '@Url.Action("GetByIdAjax", "Empleado")';
-    var urlEmpleadoAdd = '@Url.Action("AddAjax", "Empleado")';
-    var urlEmpleadoUpdate = '@Url.Action("UpdateAjax", "Empleado")';
-    var urlDepartamentoGetAll = '@Url.Action("GetDepartamentos", "Empleado")';
-</script>
+</div>-->
+@section scripts {
+    <script src="~/Scripts/PeticionesAjax/DevExpress.js"></script>
+    <script src="~/Scripts/PeticionesAjax/EmpleadoGetAll.js"></script>
+    <script src="~/Scripts/PeticionesAjax/EmpleadoDelete.js"></script>
+    <script src="~/Scripts/PeticionesAjax/EmpleadoFormulario.js"></script>
+    <script>
+        $(document).ready(function () {
+            cargarEmpleados();
+        });
+        var urlEmpleadoGetAll = '@Url.Action("GetAllAjax", "Empleado")';
+        var urlEmpleadoDelete = '@Url.Action("DeleteAjax", "Empleado")';
+        var urlEmpleadoGetById = '@Url.Action("GetByIdAjax", "Empleado")';
+        var urlEmpleadoAdd = '@Url.Action("AddAjax", "Empleado")';
+        var urlEmpleadoUpdate = '@Url.Action("UpdateAjax", "Empleado")';
+        var urlDepartamentoGetAll = '@Url.Action("GetDepartamentos", "Empleado")';
+    </script>
+}
+
+@*<script src="~/Scripts/jquery-3.7.0.js"></script>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>*@

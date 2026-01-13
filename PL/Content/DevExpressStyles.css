@@ -1,0 +1,30 @@
+﻿.dx-datagrid .dx-button.dx-datagrid-addrow-button {
+    background-color: #198754;
+    color: white;
+    border-radius: 6px;
+}
+
+.dx-datagrid .dx-link-edit {
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+.dx-datagrid .dx-link-delete {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+    .dx-datagrid .dx-link-edit:hover,
+    .dx-datagrid .dx-link-delete:hover {
+        opacity: 0.8;
+    }
+
+.dx-popup .dx-button.dx-button-success {
+    background-color: #198754;
+    color: white;
+}
+
+.dx-popup .dx-button.dx-button-danger {
+    background-color: #dc3545;
+    color: white;
+}
