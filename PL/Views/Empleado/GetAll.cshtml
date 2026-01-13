@@ -3,16 +3,20 @@
     ViewBag.Title = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/Content/FomularioEmpleado.css" rel="stylesheet" />
 
 <h1 class="text-center">Empleado</h1>
 <div class="d-flex justify-content-between align-items-center">
     <p>Para dar de alta un nuevo empleado, presione el siguiente botón: </p>
-    <a class="btn btn-success d-flex align-items-center justify-content-center mb-2" style="width:40px; height:40px;" href="@Url.Action("Formulario", "Empleado", new { IdEmpleado = 0 })">
+    @*<a class="btn btn-success d-flex align-items-center justify-content-center mb-2" style="width:40px; height:40px;" href="@Url.Action("Formulario", "Empleado", new { IdEmpleado = 0 })">
+            <i class="bi bi-person-plus fs-5"></i>
+        </a>*@
+    <button id="btnAgregar" class="btn btn-success mb-2 d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
         <i class="bi bi-person-plus fs-5"></i>
-    </a>
+    </button>
 </div>
 <div class="table-responsive">
-    <table id="tblUsuarios" class="table text-center align-middle">
+    <table id="tblEmpleado" class="table text-center align-middle">
         <thead class="table-dark align-middle">
             <tr>
                 <th scope="col">Nombre Empleado</th>
@@ -25,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.Empleados != null)
+            @*@if (Model.Empleados != null)
             {
                 foreach (ML.Empleado empleado in Model.Empleados)
                 {
@@ -40,15 +44,29 @@
                             Eliminar</a></td>
                     </tr>
                 }
-            }
-            else
-            {
-        <tr>
-            <td>Sin regitros por mostrar</td>
-
-        </tr>
-            }
-
-            </tbody>
+                }
+                else
+                {
+            <tr>
+                <td>Sin regitros por mostrar</td>
+            </tr>
+                }*@
+        </tbody>
     </table>
 </div>
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/PeticionesAjax/EmpleadoGetAll.js"></script>
+<script src="~/Scripts/PeticionesAjax/EmpleadoDelete.js"></script>
+<script src="~/Scripts/PeticionesAjax/EmpleadoFormulario.js"></script>
+<script>
+    $(document).ready(function () {
+        cargarEmpleados();
+    });
+    var urlEmpleadoGetAll = '@Url.Action("GetAllAjax", "Empleado")';
+    var urlEmpleadoDelete = '@Url.Action("DeleteAjax", "Empleado")';
+    var urlEmpleadoGetById = '@Url.Action("GetByIdAjax", "Empleado")';
+    var urlEmpleadoAdd = '@Url.Action("AddAjax", "Empleado")';
+    var urlEmpleadoUpdate = '@Url.Action("UpdateAjax", "Empleado")';
+    var urlDepartamentoGetAll = '@Url.Action("GetDepartamentos", "Empleado")';
+</script>

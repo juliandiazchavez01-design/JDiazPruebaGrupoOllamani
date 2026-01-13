@@ -10,17 +10,18 @@ namespace PL.Controllers
 {
     public class EmpleadoController : Controller
     {
+        [HttpGet]
         public ActionResult GetAll()
         {
-            ML.Empleado empleado = new ML.Empleado();
-            empleado.Empleados = new List<object>();
+            //ML.Empleado empleado = new ML.Empleado();
+            //empleado.Empleados = new List<object>();
             //ML.Result result = BL.Empleado.GetAllEF();
-            ML.Result result = BL.Empleado.GetAllDQ();
-            if (result.Correct && result.Objects != null)
-            {
-                empleado.Empleados = result.Objects;
-            }
-            return View(empleado);
+            //ML.Result result = BL.Empleado.GetAllDQ();
+            //if (result.Correct && result.Objects != null)
+            //{
+            //    empleado.Empleados = result.Objects;
+            //}
+            return View(/*empleado*/);
         }
 
         [HttpGet]
@@ -109,6 +110,46 @@ namespace PL.Controllers
                 TempData["SwalIcon"] = "error";
             }
             return RedirectToAction("GetAll");
+        }
+
+        [HttpGet]
+        public JsonResult GetAllAjax()
+        {
+            ML.Result result = BL.Empleado.GetAllDQ();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteAjax(int IdEmpleado)
+        {
+            ML.Result result = BL.Empleado.DeleteDQ(IdEmpleado);
+            return Json(result);
+        }
+
+        [HttpGet]
+        public JsonResult GetByIdAjax(int IdEmpleado)
+        {
+            ML.Result result = BL.Empleado.GetByIdDQ(IdEmpleado);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult AddAjax(ML.Empleado empleado)
+        {
+            ML.Result result = BL.Empleado.AddDQ(empleado);
+            return Json(result);
+        }
+        [HttpPost]
+        public JsonResult UpdateAjax(ML.Empleado empleado)
+        {
+            ML.Result result = BL.Empleado.UpdateDQ(empleado);
+            return Json(result);
+        }
+
+        [HttpGet]
+        public JsonResult GetDepartamentos()
+        {
+            ML.Result result = BL.Departamento.GetAll();
+            return Json(result.Objects, JsonRequestBehavior.AllowGet);
         }
     }
 }
